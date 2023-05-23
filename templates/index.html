@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ficha de Cadastro V.2</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autoNumeric/4.3.0/autoNumeric.min.js" integrity="sha512-A7Y9kQfCChPY7GLrT/hNzUPVutx5nAJfj7GFl6U0j1ruyXoeb97bmLW3rhN/wywohLn4JmKlLRD3m1R9uqJZ1A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function formatar(mascara, documento) {
+            var i = documento.value.length;
+            var saida = mascara.substring(0, 1);
+            var texto = mascara.substring(i);
+
+            if (texto.substring(0, 1) != saida) {
+                documento.value += texto.substring(0, 1);
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            // seleciona o campo de entrada de texto
+            var inputValor = $('.card-box3 input[name="valor_pedido"]');
+
+            // aplica a máscara de valor monetário brasileiro com opções
+            inputValor.maskMoney({
+                prefix: 'R$ ', // adiciona o símbolo R$ à esquerda do valor
+                thousands: '.', // separador de milhar
+                decimal: ',', // separador decimal
+                allowZero: true, // permite o valor zero
+                allowNegative: false, // não permite valores negativos
+                affixesStay: true // mantém o prefixo e sufixo ao editar o valor
+            });
+        });
+    </script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <img src="{{url_for('static', filename='logo_stik.png')}}" class="rounded float-start" alt="Stik Elásticos"></br><br><br>
+        <div class="heading">FICHA DE CADASTRO</div>
+        <form action='/send' method="POST" enctype="multipart/form-data">
+            <div class="card-details">
+                <div class="card-box3">
+                    <span class="details">DATA<span style="color:red;">*</span>
+                    <input type="date" name='dat' id='dat' value="${new Date().toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit', year: '2-digit'})}" class="form-control" placeholder="Data" required>
+                </div>
+                <div class="circal-form">
+                    <input type="radio" name="tipo" id="dot-1" value="novo" required>
+                    <input type="radio" name="tipo" id="dot-2" value="renovação" required>
+                    <input type="radio" name="tipo" id="dot-3" value="atualização" required>
+                    <span class="circal-title">TIPO<span style="color:red;">*</span></span>
+                    <div class="category">
+                        <label for="dot-1">
+                            <span class="dot one"></span>
+                            <span class="tipos" id="novo" name="tipo">NOVO</span>
+                        </label>
+                        <label for="dot-2">
+                            <span class="dot two"></span>
+                            <span class="tipos" id="renovação" name="tipo">RENOVAÇÃO</span>
+                        </label>
+                        <label for="dot-3">
+                            <span class="dot three"></span>
+                            <span class="tipos" id="atualização" name="tipo">ATUALIZAÇÃO</span>
+                        </label>
+                    </div>
+                    <div class="error-message" style="display: none;">Por favor, selecione uma opção.</div>
+                </div>
+
+                <div class="card-box2">
+                    <span class="details">VENDEDOR<span style="color:red;">*</span>
+                    <input type="text" name='vendedor' id='vendedor' placeholder="Vendedor" required>
+                </div>
+                <div class="card-box">
+                    <span class="details">RAZÃO SOCIAL<span style="color:red;">*</span></span>
+                    <input type="text" name='razao_social' id='razao social' placeholder="Razão social" required>
+                </div>
+                <div class="card-box">
+                    <span class="details">NOME FANTASIA<span style="color:red;">*</span></span>
+                    <input type="text" name='nome_fantasia' id='nome fantasia' placeholder="Nome fantasia" required>
+                </div>
+                <div class="card-box">
+                    <span class="details">CNPJ<span style="color:red;">*</span></span>
+                    <input type="text" name='cnpj' id='cnpj' placeholder="Cnpj" required required maxlength="18" onkeypress="formatar('##.###.###/####-##', this)">
+                </div>
+                <div class="card-box">
+                    <span class="details">INSCRIÇÃO ESTADUAL</span>
+                    <input type="text" name='inscricao_estadual' id='inscricao estadual' placeholder="Inscrição estadual" maxlength="9" onkeypress="formatar('#########', this)">
+                </div>
+                <div class="card-box">
+                    <span class="details">ENDEREÇO</span>
+                    <input type="text" name='endereco' id='endereco' placeholder="Endereço">
+                </div>
+                <div class="card-box">
+                    <span class="details">BAIRRO</span>
+                    <input type="text" name='bairro' id='bairro' placeholder="Bairro">
+                </div>
+                <div class="card-box">
+                    <span class="details">COMPLEMENTO</span>
+                    <input type="text" name='complemento' id='complemento' placeholder="Complemento">
+                </div>
+                <div class="card-box">
+                    <span class="details">CEP</span>
+                    <input type="text" name='cep' id='cep' placeholder="Cep" maxlength="9" onkeypress="formatar('#####-###', this)">
+                </div>
+                <div class="card-box">
+                    <span class="details">CIDADE</span>
+                    <input type="text" name='cidade' id='cidade' placeholder="Cidade">
+                </div>
+                <div class="card-box">
+                    <span class="details">ESTADO</span>
+                    <input type="text" name='estado' id='estado' placeholder="Estado">
+                </div>
+                <div class="card-box">
+                    <span class="details">CONTATO</span>
+                    <input type="text" name='contato' id='contato' placeholder="Nome">
+                </div>
+                <div class="card-box">
+                    <span class="details">TELEFONE<span style="color:red;">*</span></span>
+                    <input type="text" name='tel_contato' id='tel contato' placeholder="(00) 00000-0000" required maxlength="13" onkeypress="formatar('##-#####-####', this)">
+                </div>
+                <div class="card-box">
+                    <span class="details">E-MAIL CLIENTE<span style="color:red;">*</span></span>
+                    <input type="text" name='email_cliente' id='email cliente' placeholder="exemplo@exemplo.com.br" required>
+                </div>
+                <div class="card-box">
+                    <span class="details">E-MAIL ASSISTENTE COMERCIAL<span style="color:red;">*</span></span>
+                    <input type="email" name='email_assis_comercial' id='email assis comercial' placeholder="exemplo@exemplo.com.br" required>
+                </div>
+                <div class="card-box2">
+                    <span class="details">E-MAIL GESTOR FINANCEIRO<span style="color:red;">*</span></span>
+                    <input type="email" name='email_gest_financeiro' id='email gest financeiro' placeholder="exemplo@exemplo.com.br" required>
+                </div>
+                <div class="card-box2">
+                    <span class="details">E-MAIL GESTOR COMERCIAL<span style="color:red;">*</span></span>
+                    <input type="email" name='email_gest_comercial' id='email gest comercial' placeholder="exemplo@exemplo.com.br" required>
+                </div>
+                <div class="card-box2">
+                    <span class="details">REFERÊNCIAS COMERCIAIS</span>
+                    <input type="text" name='referencia_comercial' id='referencia comercial' placeholder="Razão social">
+                </div>
+                <div class="card-box">
+                    <span class="details">CONTATO</span>
+                    <input type="text" name='contato_referencia' id='contato referencia' placeholder="Nome">
+                </div>
+                <div class="card-box">
+                    <span class="details">TELEFONE</span>
+                    <input type="text" name='tel_referencia' id='tel referencia' placeholder="(00) 00000-0000" maxlength="13" onkeypress="formatar('##-#####-####', this)">
+                </div>
+                <div class="card-box3">
+                    <span class="details">VALOR PEDIDO</span>
+                    <input type="text" name='valor_pedido' id='valor_pedido' placeholder="Valor Pedido">
+                </div>
+                <div class="card-box">
+                    <span class="details">PAGAMENTO</span>
+                    <input type="text" name='pagamento' id='pagamento' placeholder="Forma">
+                </div>
+                <div class="card-box">
+                    <span class="details">PRAZO ESTIMADO</span>
+                    <input type="text" name='prazo_estimado' id='prazo estimado' placeholder="Prazo">
+                </div>
+                <div class="card-box2">
+                    <textarea rows="10" cols="100" type="text" name='parecer' placeholder="Parecer"></textarea>
+                </div>
+                <div class="card-box2">
+                    <form method="POST" action='/send' enctype="multipart/form-data">
+                        <center>
+                            <i class=' bx bxs-cloud-upload icon '></i>
+                            <h3>Upload de arquivos</h3>
+                        </center>
+
+                        <div class="anexo">
+                            <label for="file_upload">Selecionar Arquivos</label>
+                            <input type="file" id="file_upload" name="file_upload" multiple change onchange="displayFiles(); sendFiles();"><br><br>
+                        </div>
+                        <ul id="file-list"></ul>
+                        <!-- Adiciona um campo de formulário oculto para armazenar os dados do arquivo -->
+                        <input type="hidden" id="file-list-input" name="file_list" value="">
+
+                    </form>
+
+                    <script>
+                        var fileList = []
+
+                        function displayFiles() {
+                            var input = document.getElementById("file_upload");
+                            var output = document.getElementById("file-list");
+                            var files = input.files;
+
+                            /* Essa linha remove todos os elementos da tag <ul> antes de adicionar o último arquivo.*/
+                            /*output.innerHTML = " ";*/
+
+                            var formData = new FormData();
+                            for (var i = 0; i < files.length; i++) {
+                                var li = document.createElement("li");
+                                li.textContent = files[i].name;
+                                output.appendChild(li);
+                                formData.append('file_upload', files[i]);
+                            }
+
+                            // Envia os arquivos usando AJAX
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', '/send', true);
+                            xhr.onreadystatechange = function() {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    console.log('Upload completo!');
+                                }
+                            };
+
+                            xhr.send(formData);
+                        }
+
+                        function sendFiles() {
+                            for (var i = 0; i < fileList.length; i++) {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST ', '/upload ', true);
+                                var formData = new FormData();
+                                formData.append('file ', fileList[i].relativePath);
+
+                                xhr.onreadystatechange = function() {
+                                    if (xhr.readyState === 4 && xhr.status === 200) {
+                                        console.log('Upload completo! ');
+                                    }
+                                };
+
+                                xhr.send(formData);
+                            }
+                        }
+                        document.getElementById('file_list ').addEventListener('change ', function() {
+                            var files = this.files;
+                            for (var i = 0; i < files.length; i++) {
+                                var file = files[i];
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST ', '/upload ', true);
+                                var formData = new FormData();
+                                formData.append('file ', file);
+
+                                xhr.onreadystatechange = function() {
+                                    if (xhr.readyState === 4 && xhr.status === 200) {
+                                        console.log('Upload completo! ');
+                                    }
+                                };
+                                xhr.send(formData);
+                            }
+                        });
+                    </script>
+
+
+
+
+                </div>
+
+
+                <div class="button">
+                    <button type="submit " onclick="enviarEmail() ">Enviar</button>
+                </div>
+
+
+            </div>
+        </form>
+
+    </div>
+
+
+</body>
+
+</html>
+
+</html>
